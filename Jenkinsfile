@@ -6,7 +6,7 @@ pipeline {
        stage('checkout') {
             steps {
                 sh 'sudo rm -rf joinfaces-maven-war-example'
-	sh 'git clone https://github.com/akshayvdes/hello-world-war.git'	
+	sh 'git clone https://github.com/joinfaces/joinfaces-example-war.git'	
               }
         }
 	 stage('build') {
