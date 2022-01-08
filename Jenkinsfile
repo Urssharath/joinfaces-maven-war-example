@@ -1,24 +1,32 @@
 
 pipeline {
-agent {label 'slavejava'}
-stages{
-stage('checkout'){
-steps{
-sh 'git pull https://github.com/Urssharath/hello-world-war.git'
-}
-}
-stage('build'){
-steps{
-sh 'mvn clean package'
-}
-
-}
-stage('deploy'){
-steps{
-sh 'echo "giving sudo permission for jenkins folder"'
-sh 'sudo chmod -R 0777 /opt'
-sh 'cp -R /home/jenkins/workspace/ppjava/target/hello-world-war-1.0.0 /opt/apache-tomcat-9.0.56/webapps'
-}
-}
-}
+	agent { label 'dj' }
+    stages {
+	    
+       stage('checkout') {
+            steps {
+                sh 'sudo rm -rf joinfaces-maven-war-example'
+	sh 'git clone https://github.com/akshayvdes/hello-world-war.git'	
+              }
+        }
+	 stage('build') {
+	
+            steps {
+                dir('joinfaces-maven-war-example'){
+                  sh 'pwd'
+                sh 'ls'
+            
+                sh 'docker build -t tomcat:ver1.1 .'  
+                }
+              
+                
+            }
+	 }
+	 stage('deploy'){
+	     steps{
+	        sh 'docker rm -f mytomcat'
+	         sh 'docker run -d --name mytomcat -p 7777:8080 tomcat:ver1.1'
+	     }
+	 }
+    }
 }
